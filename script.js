@@ -15,25 +15,37 @@ let validateEmail = (email) => {
 
 const changeView = () => {
   signupContainer.style.display === 'none'
-    ? (signupContainer.style.display = 'block')
+    ? window.screen.width > 600
+      ? (signupContainer.style.display = 'flex')
+      : (signupContainer.style.display = 'block')
     : (signupContainer.style.display = 'none');
   successContainer.style.display === 'none'
     ? (successContainer.style.display = 'block')
     : (successContainer.style.display = 'none');
+  emailInput.style.backgroundColor = 'white';
+  emailInput.style.color = 'hsl(234, 29%, 20%)';
+};
+
+const errorState = () => {
+  emailInput.style.border = 'solid 1px red';
+  emailInput.style.backgroundColor = 'hsl(4, 100%, 90%)';
+  emailInput.style.color = 'hsl(4, 100%, 67%)';
 };
 
 const handleSubmit = (e) => {
   let email = emailInput.value;
 
-  console.log(email);
+  // console.log(email);
   console.log(validateEmail(email));
   if (email === '' || email === null) {
     e.preventDefault();
     validationMessage.removeAttribute('hidden');
+    errorState();
     return;
   } else if (!validateEmail(email)) {
     e.preventDefault();
     validationMessage.removeAttribute('hidden');
+    errorState();
     return;
   } else {
     e.preventDefault();
@@ -48,13 +60,21 @@ const handleSubmit = (e) => {
 
 form.addEventListener('submit', handleSubmit);
 dismiss.addEventListener('click', changeView);
-// console.log(validateEmail(email));
+emailInput.addEventListener('keyup', () => {
+  console.log(emailInput.value);
+  if (emailInput.value === '') {
+    emailInput.style.backgroundColor = 'white';
+    emailInput.style.border = 'solid 1px hsl(235, 18%, 26%)';
+    emailInput.style.color = 'hsl(234, 29%, 20%)';
+    validationMessage.hidden = true;
+  }
+});
 
-// else if (!input) {
-//     preventDefault();
-//     validationMessage.removeAttribute('hidden');
-//     return;
-//   } else {
-//     subscriberEmail.innerText = email;
-//     return;
-//   }
+emailInput.addEventListener('click', () => {
+  if (emailInput.value === '') {
+    emailInput.style.backgroundColor = 'white';
+    emailInput.style.border = 'solid 1px hsl(235, 18%, 26%)';
+    emailInput.style.color = 'hsl(234, 29%, 20%)';
+    validationMessage.hidden = true;
+  }
+});
